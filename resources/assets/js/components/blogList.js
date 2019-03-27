@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
 import moment from 'moment'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 //Stateless Functions
 const BlogList = props =>{
@@ -11,8 +11,8 @@ const BlogList = props =>{
             {props.data.map(item => {
                 return (
                     <li key={ item.id } className="post_inner">
+                        <span className="date">{ moment(item.date).format("YYYY.MM.DD") }</span>
                         <Link to={'/'+item.id}>
-                            <span className="date">{ moment(item.date).format("YYYY.MM.DD") }</span>
                             <span className="title">{ item.title.rendered }</span>
                         </Link>
                     </li>

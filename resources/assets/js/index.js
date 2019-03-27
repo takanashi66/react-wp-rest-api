@@ -5,12 +5,14 @@ import 'whatwg-fetch'
 
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 //BlogListコンポーネント
 import BlogList from './components/blogList'
 //Singleコンポーネント
 import Single from './components/single'
+//404コンポーネント
+import NotFound from './components/404'
 
 const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
 
@@ -55,14 +57,17 @@ class App extends Component {
             <div className="wrap">
                 <header className="header"><h1>CodeCode</h1></header>
                 <main className="main">
-                    <BrowserRouter>
-                        <Route exact path='/' render={() => <BlogList data={this.state.data} />} />
-                        {this.state.data.map(item => {
-                            return (
-                                <Route key={item.id} exact path={'/'+item.id} render={() => <Single id={item.id} />} />
-                            )
-                        })}
-                    </BrowserRouter>
+                    <Router>
+                        <Switch>
+                            <Route exact path='/' render={() => <BlogList data={this.state.data} />} />
+                            {this.state.data.map(item => {
+                                return (
+                                    <Route key={item.id} exact path={'/'+item.id} render={() => <Single id={item.id} />} />
+                                )
+                            })}
+                            <Route exact render={() => <NotFound />} />
+                        </Switch>
+                    </Router>
                 </main>
             </div>
         )

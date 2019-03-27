@@ -4,7 +4,7 @@ import "@babel/polyfill";
 import 'whatwg-fetch'
 
 import React, {Component} from 'react'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
 
