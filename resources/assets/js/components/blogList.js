@@ -8,18 +8,16 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 const BlogList = props =>{
     return(
         <ul className="blogList">
-            <BrowserRouter>
-                {props.data.map(item => {
-                    return (
-                        <li key={ item.id } className="post_inner">
-                            <Link to={'/'+item.id}>
-                                <span className="date">{ moment(item.date).format("YYYY.MM.DD") }</span>
-                                <span className="title">{ item.title.rendered }</span>
-                            </Link>
-                        </li>
-                    )
-                })}
-            </BrowserRouter>
+            {props.data.map(item => {
+                return (
+                    <li key={ item.id } className="post_inner">
+                        <Link to={'/'+item.id}>
+                            <span className="date">{ moment(item.date).format("YYYY.MM.DD") }</span>
+                            <span className="title">{ item.title.rendered }</span>
+                        </Link>
+                    </li>
+                )
+            })}
         </ul>
     )
 }
