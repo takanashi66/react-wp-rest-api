@@ -26,7 +26,6 @@ class Single extends Component {
                 postData: [responseData]
             })
         })
-        
     }
 
     render(){
@@ -34,8 +33,14 @@ class Single extends Component {
             <article>
                 {this.state.postData.map(item =>{
                     return (
-                        <div className="single">
-                            <h2 key={item.id}>{item.title.rendered}</h2>
+                        <div key={item.id} className="single">
+                            <h2>{item.title.rendered}</h2>
+                            <div className="meta">
+                                <ul>
+                                    <li>タグ1</li>
+                                    <li>タグ2</li>
+                                </ul>
+                            </div>
                             <div className="contents" dangerouslySetInnerHTML={{__html: item.content.rendered}}></div>
                             <p className="return">
                                 <Link to="/">トップに戻る</Link>

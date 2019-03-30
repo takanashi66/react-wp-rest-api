@@ -76,6 +76,31 @@ main{
         margin-bottom: 20px;
     }
     
+    .meta{
+        margin-bottom: 30px;
+        
+        ul{
+            display: flex;
+            
+            li{
+                list-style: none;
+                color: #8e8e8e;
+                
+                &::before{
+                    content: "#";
+                }
+                
+                &:not(:last-child){
+                    margin-right: .5em;
+                    
+                    &::after{
+                        content: ",";
+                    }
+                }
+            }
+        }
+    }
+    
     .contents{
         font-size: 1.4rem;
         line-height: 1.8;
@@ -116,5 +141,32 @@ main{
     
     p{
         font-size: 2rem;
+    }
+}
+
+.search{
+    margin-bottom: 40px;
+    
+    form{
+        display: flex;
+        justify-content: center;
+    }
+    
+    input{
+        border: none;
+        background: none;
+        font-size: 1.6rem;
+        padding: .5em 1em;
+        outline: none;
+    }
+    
+    input[type=search]{
+        border: solid 1px #ccc;
+        border-right: 0;
+        line-height: 1.4;
+    }
+    
+    input[type=submit]{
+        background-color: #ccc;
     }
 }
