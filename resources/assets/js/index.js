@@ -9,12 +9,14 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 //BlogListコンポーネント
 import BlogList from './components/blogList'
+//BlogListコンポーネント
+import TagList from './components/tagList'
 //Singleコンポーネント
 import Single from './components/single'
 //404コンポーネント
 import NotFound from './components/404'
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
+const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts?_embed&page=1&per_page=10"
 
 //メインコンポーネント
 class App extends Component {
@@ -65,7 +67,8 @@ class App extends Component {
                                     <Route key={item.id} exact path={'/'+item.id} render={() => <Single id={item.id} />} />
                                 )
                             })}
-                            <Route exact render={() => <NotFound />} />
+                            <Route path="/tags/:id" component={TagList} />
+                            <Route render={() => <NotFound />} />
                         </Switch>
                     </Router>
                 </main>

@@ -13,13 +13,12 @@ class Single extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: [],
             postData: []
         }
     }
 
     componentWillMount(){
-        fetch(rest_url+this.props.id)
+        fetch(rest_url + this.props.id + "?_embed")
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
@@ -36,9 +35,41 @@ class Single extends Component {
                         <div key={item.id} className="single">
                             <h2>{item.title.rendered}</h2>
                             <div className="meta">
-                                <ul>
-                                    <li>タグ1</li>
-                                    <li>タグ2</li>
+                                <ul className="categorys">
+                                    {/*タグを出力する即時関数*/}
+                                    {(() => {
+                                        const items = []
+                                        for(let i in item._embedded['wp:term']){
+                                            for(let j in item._embedded['wp:term'][i]){
+                                                if(item._embedded['wp:term'][i][j].taxonomy === "category"){
+                                                    items.push(<li key={item._embedded['wp:term'][i][j].id}>{item._embedded['wp:term'][i][j].name}</li>)
+                                                }
+                                            }
+                                        }
+                                        return items
+                                    })()}
+                                    
+                                </ul>
+                                <ul className="tags">
+                                    {/*タグを出力する即時関数*/}
+                                    {(() => {
+                                        const items = []
+                                        for(let i in item._embedded['wp:term']){
+                                            for(let j in item._embedded['wp:term'][i]){
+                                                if(item._embedded['wp:term'][i][j].taxonomy === "post_tag"){
+                                                    items.push(
+                                                        <li key={item._embedded['wp:term'][i][j].id}>
+                                                            <Link to={'/tags/' + item._embedded['wp:term'][i][j].id}>
+                                                                {item._embedded['wp:term'][i][j].name}
+                                                            </Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        return items
+                                    })()}
+                                    
                                 </ul>
                             </div>
                             <div className="contents" dangerouslySetInnerHTML={{__html: item.content.rendered}}></div>

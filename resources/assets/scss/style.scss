@@ -82,6 +82,31 @@ main{
         ul{
             display: flex;
             
+            &:not(:last-child){
+                margin-bottom: 10px;
+            }
+        }
+        
+        .categorys{
+            li{
+                list-style: none;
+                color: #262626;
+                
+                &::before{
+                    content: "%";
+                }
+                
+                &:not(:last-child){
+                    margin-right: .5em;
+                    
+                    &::after{
+                        content: ",";
+                    }
+                }
+            }
+        }
+        
+        .tags{
             li{
                 list-style: none;
                 color: #8e8e8e;
