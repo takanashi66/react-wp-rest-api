@@ -18,7 +18,7 @@ class Single extends Component {
     }
 
     componentWillMount(){
-        fetch(rest_url + this.props.id + "?_embed")
+        fetch(rest_url + this.props.match.params.id + "?_embed")
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
@@ -35,14 +35,20 @@ class Single extends Component {
                         <div key={item.id} className="single">
                             <h2>{item.title.rendered}</h2>
                             <div className="meta">
-                                <ul className="categorys">
+                                <ul className="categories">
                                     {/*タグを出力する即時関数*/}
                                     {(() => {
                                         const items = []
                                         for(let i in item._embedded['wp:term']){
                                             for(let j in item._embedded['wp:term'][i]){
                                                 if(item._embedded['wp:term'][i][j].taxonomy === "category"){
-                                                    items.push(<li key={item._embedded['wp:term'][i][j].id}>{item._embedded['wp:term'][i][j].name}</li>)
+                                                    items.push(
+                                                        <li key={item._embedded['wp:term'][i][j].id}>
+                                                            <Link to={'/categories/' + item._embedded['wp:term'][i][j].id}>
+                                                                {item._embedded['wp:term'][i][j].name}
+                                                            </Link>
+                                                        </li>
+                                                    )
                                                 }
                                             }
                                         }
