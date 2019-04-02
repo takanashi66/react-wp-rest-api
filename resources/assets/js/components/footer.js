@@ -6,8 +6,8 @@ import 'whatwg-fetch'
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-const categories_url = "http://codecodeweb.d/wp-json/wp/v2/categories"
-const tags_url = "http://codecodeweb.d/wp-json/wp/v2/tags"
+const categories_url = "http://codecodeweb.d/wp-json/wp/v2/categories?per_page=10"
+const tags_url = "http://codecodeweb.d/wp-json/wp/v2/tags?per_page=20"
 
 //メインコンポーネント
 class Footer extends Component {
