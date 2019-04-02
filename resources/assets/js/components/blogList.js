@@ -81,7 +81,7 @@ class BlogList extends Component {
                         return (
                             <li key={ item.id } className="post_inner">
                                 <span className="date">{ moment(item.date).format("YYYY.MM.DD") }</span>
-                                <Link to={'/'+item.id}>
+                                <Link to={'/blog/'+item.id}>
                                     <span className="title">{ item.id } { item.title.rendered }</span>
                                 </Link>
                             </li>

@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Loading from './components/loading'
 //BlogListコンポーネント
 import BlogList from './components/blogList'
+//BlogListコンポーネント
+import PageList from './components/pageList'
 //TagListコンポーネント
 import TagList from './components/tagList'
 //CategoryListコンポーネント
@@ -54,10 +56,11 @@ class App extends Component {
                     <main className="main">
                         <Switch>
                             <Route exact path='/' component={BlogList} />
-                            <Route exact path="/:id" component={Single} />
-                            <Route exact path="/categories/:id" component={CategoryList} />
-                            <Route exact path="/tags/:id" component={TagList} />
-                            <Route render={() => <NotFound />} />
+                            <Route exact path='/page/:id' component={PageList} />
+                            <Route path="/blog/:id" component={Single} />
+                            <Route path="/categories/:id" component={CategoryList} />
+                            <Route path="/tags/:id" component={TagList} />
+                            <Route component={NotFound} />
                         </Switch>
                     </main>
                     <Footer />
