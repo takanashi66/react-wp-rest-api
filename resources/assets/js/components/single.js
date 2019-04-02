@@ -6,6 +6,9 @@ import 'whatwg-fetch'
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
+//Loadingコンポーネント
+import Loading from './loading'
+
 const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
 
 //メインコンポーネント
@@ -13,21 +16,29 @@ class Single extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: false,
             postData: []
         }
     }
 
     componentWillMount(){
+        this.setState({ isLoading: true })
+        
         fetch(rest_url + this.props.match.params.id + "?_embed")
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
-                postData: [responseData]
+                postData: [responseData],
+                isLoading: false
             })
         })
     }
 
     render(){
+        if(this.state.isLoading) {
+            return <Loading />
+        }
+        
         return(
             <article>
                 {this.state.postData.map(item =>{

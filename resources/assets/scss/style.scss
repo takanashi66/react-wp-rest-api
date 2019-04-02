@@ -10,12 +10,32 @@
 
 
 
-
+@import 'loaders/loaders';
 
 
 //*------------------------------------*//
 //	page
 //*------------------------------------*//
+
+.loading{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ball-scale-ripple-multiple{
+    & > div{
+        background-color: #89e5f5;
+    }
+}
+
 html,body{
     height: 100%;
 }
@@ -63,8 +83,13 @@ main{
         
         ul{
             display: flex;
+            flex-wrap: wrap;
             
             &:not(:last-child){
+                margin-bottom: 10px;
+            }
+            
+            li{
                 margin-bottom: 10px;
             }
         }

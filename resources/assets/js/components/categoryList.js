@@ -8,6 +8,9 @@ import moment from 'moment'
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
+//Loadingコンポーネント
+import Loading from './loading'
+
 const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts"
 const meta_url = "http://codecodeweb.d/wp-json/wp/v2/categories"
 
@@ -16,12 +19,15 @@ class TagList extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: false,
             postData: [],
             metaData: []
         }
     }
     
     componentWillMount(){
+        this.setState({ isLoading: true })
+        
         fetch(meta_url + "/"+ this.props.match.params.id)
         .then((responseMeta) => responseMeta.json())
         .then((responseMetaData) => {
@@ -34,12 +40,17 @@ class TagList extends Component {
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
-                postData: responseData
+                postData: responseData,
+                isLoading: false
             })
         })
     }
 
     render(){
+        if(this.state.isLoading) {
+            return <Loading />
+        }
+        
         return(
             <div className="categories">
                 {this.state.metaData.map(meta => {
