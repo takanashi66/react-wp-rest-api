@@ -22,38 +22,6 @@ class BlogList extends Component {
         }
     }
     
-    OnClickNextPage(){
-        this.setState({
-            isLoading: true,
-            page: ++this.state.page
-        })
-        
-        fetch(rest_url + rest_page + this.state.page + rest_per_page)
-        .then((response) => response.json())
-        .then((responseData) => {
-            this.setState({
-                data: responseData,
-                isLoading: false
-            })
-        })
-    }
-    
-    OnClickPrevPage(){
-        this.setState({
-            isLoading: true,
-            page: --this.state.page
-        })
-        
-        fetch(rest_url + rest_page + this.state.page + rest_per_page)
-        .then((response) => response.json())
-        .then((responseData) => {
-            this.setState({
-                data: responseData,
-                isLoading: false
-            })
-        })
-    }
-    
     componentWillMount(){
         this.setState({ isLoading: true })
         
@@ -89,8 +57,7 @@ class BlogList extends Component {
                     })}
                 </ul>
                 <ul className="pager">
-                    <li className="btn_prev" onClick={this.OnClickPrevPage.bind(this)}>前のページ</li>
-                    <li className="btn_next" onClick={this.OnClickNextPage.bind(this)}>次のページ</li>
+                    <li className="btn_next"><Link to={"/page/2"}>次のページ</Link></li>
                 </ul>
             </div>
         )

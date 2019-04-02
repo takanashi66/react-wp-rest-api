@@ -336,6 +336,15 @@ main{
         &:not(:last-child){
             margin-right: auto;
         }
+        
+        &:hover{
+            opacity: .7;
+        }
+        
+        a{
+            color: $font-color;
+            text-decoration: none;
+        }
     }
     
     .btn_next{
