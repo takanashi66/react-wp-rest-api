@@ -2,12 +2,15 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
 import moment from 'moment'
-import { BrowserRouter as Router, Route, Link, Switch, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, withRouter } from "react-router-dom"
+import MetaTags from 'react-meta-tags'
 
 //Loadingコンポーネント
 import Loading from './loading'
+//404コンポーネント
+import NotFound from './404'
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts?_embed"
+const rest_url = "https://codecodeweb.com/wp-json/wp/v2/posts?_embed"
 const rest_page = "&page="
 const rest_per_page = "&per_page=10"
 
@@ -19,7 +22,8 @@ class PageList extends Component {
             isLoading: false,
             data: [],
             totalPages: 1,
-            page: 1
+            page: 1,
+            isError: 0
             
         }
     }
@@ -37,7 +41,14 @@ class PageList extends Component {
             
             fetch(rest_url + rest_page + prevNumber+ rest_per_page)
             .then((response) => {
-                return response.json()
+                if (response.ok) {
+                    return response.json()
+                }else{
+                    this.setState({
+                        isError: response.status,
+                        isLoading: false
+                    })
+                }
             })
             .then((responseData) => {
                 this.setState({
@@ -61,7 +72,14 @@ class PageList extends Component {
         
         fetch(rest_url + rest_page + nextNumber+ rest_per_page)
         .then((response) => {
-            return response.json()
+            if (response.ok) {
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
         })
         .then((responseData) => {
             this.setState({
@@ -76,12 +94,17 @@ class PageList extends Component {
         
         fetch(rest_url + rest_page + this.props.match.params.id + rest_per_page)
         .then((response) => {
-            console.log(response.headers.get('x-wp-totalpages'));
-            this.setState({
-                totalPages: response.headers.get('x-wp-totalpages')
-            })
-            
-            return response.json()
+            if (response.ok) {
+                this.setState({
+                    totalPages: response.headers.get('x-wp-totalpages')
+                })
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
         })
         .then((responseData) => {
             this.setState({
@@ -95,9 +118,17 @@ class PageList extends Component {
         if(this.state.isLoading) {
             return <Loading key={this.state.isLoading} />
         }
+        
+        if(this.state.isError != 0) {
+            return <NotFound />
+        }
     
         return(
             <div className="blog_list">
+                <MetaTags>
+                    <meta name="robots" content="noindex" />
+                    <title>ページ:{ this.props.match.params.id } | CodeCode</title>
+                </MetaTags>
                 <ul className="blogList">
                     {this.state.data.map(item => {
                         return (

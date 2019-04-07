@@ -6,8 +6,10 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 //Loadingコンポーネント
 import Loading from './loading'
+//404コンポーネント
+import NotFound from './404'
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts?_embed"
+const rest_url = "https://codecodeweb.com/wp-json/wp/v2/posts?_embed"
 const rest_page = "&page="
 const rest_per_page = "&per_page=10"
 
@@ -18,7 +20,8 @@ class BlogList extends Component {
         this.state = {
             isLoading: false,
             page: 1,
-            data: []
+            data: [],
+            isError: 0
         }
     }
     
@@ -27,7 +30,14 @@ class BlogList extends Component {
         
         fetch(rest_url + rest_page + this.state.page + rest_per_page)
         .then((response) => {
-            return response.json()
+            if (response.ok) {
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
         })
         .then((responseData) => {
             this.setState({
@@ -40,6 +50,10 @@ class BlogList extends Component {
     render(){
         if(this.state.isLoading) {
             return <Loading key={this.state.isLoading} />
+        }
+        
+        if(this.state.isError != 0) {
+            return <NotFound />
         }
     
         return(

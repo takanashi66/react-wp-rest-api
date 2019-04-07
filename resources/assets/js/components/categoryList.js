@@ -6,13 +6,16 @@ import 'whatwg-fetch'
 import moment from 'moment'
 
 import React, {Component} from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
+import MetaTags from 'react-meta-tags'
 
 //Loadingコンポーネント
 import Loading from './loading'
+//404コンポーネント
+import NotFound from './404'
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts"
-const meta_url = "http://codecodeweb.d/wp-json/wp/v2/categories"
+const rest_url = "https://codecodeweb.com/wp-json/wp/v2/posts"
+const meta_url = "https://codecodeweb.com/wp-json/wp/v2/categories"
 
 //メインコンポーネント
 class TagList extends Component {
@@ -21,7 +24,8 @@ class TagList extends Component {
         this.state = {
             isLoading: false,
             postData: [],
-            metaData: []
+            metaData: [],
+            isError: 0
         }
     }
     
@@ -29,7 +33,16 @@ class TagList extends Component {
         this.setState({ isLoading: true })
         
         fetch(meta_url + "/"+ this.props.match.params.id)
-        .then((responseMeta) => responseMeta.json())
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
+        })
         .then((responseMetaData) => {
             this.setState({
                 metaData: [responseMetaData]
@@ -37,7 +50,16 @@ class TagList extends Component {
         })
         
         fetch(rest_url + "?categories="+ this.props.match.params.id + "&_embed")
-        .then((response) => response.json())
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
+        })
         .then((responseData) => {
             this.setState({
                 postData: responseData,
@@ -51,10 +73,22 @@ class TagList extends Component {
             return <Loading />
         }
         
+        if(this.state.isError != 0) {
+            return <NotFound />
+        }
+        
         return(
             <div className="categories">
                 {this.state.metaData.map(meta => {
-                    return <h2 key={ meta.id } className="metaTitle">カテゴリーが<strong>{ meta.name }</strong>の記事</h2>
+                    return(
+                        <div key={ meta.id } className="metaTitle">
+                            <MetaTags>
+                                <meta name="robots" content="noindex" />
+                                <title>カテゴリー:{ meta.name } | CodeCode</title>
+                            </MetaTags>
+                            <h2>カテゴリーが<strong>{ meta.name }</strong>の記事</h2>
+                        </div>
+                    )
                 })}
                 <ul className="blogList">
                     {this.state.postData.map(item => {

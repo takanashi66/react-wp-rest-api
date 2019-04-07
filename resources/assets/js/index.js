@@ -1,11 +1,12 @@
 //IE11用に追加
-import "@babel/polyfill";
+import "@babel/polyfill"
 //@babel/polyfillにはfetchが含まれてないので追加
 import 'whatwg-fetch'
 
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
+import MetaTags from 'react-meta-tags'
 
 //Loadingコンポーネント
 import Loading from './components/loading'
@@ -51,6 +52,9 @@ class App extends Component {
         
         return(
             <div className="wrap">
+                <MetaTags>
+                    <title>CodeCode</title>
+                </MetaTags>
                 <Router>
                     <header className="header"><h1>CodeCode</h1></header>
                     <main className="main">

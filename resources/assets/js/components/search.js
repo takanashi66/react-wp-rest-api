@@ -6,7 +6,7 @@ import 'whatwg-fetch'
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
+const rest_url = "https://codecodeweb.com/wp-json/wp/v2/posts/"
 
 //メインコンポーネント
 class Single extends Component {

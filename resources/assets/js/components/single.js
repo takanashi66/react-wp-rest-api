@@ -5,11 +5,14 @@ import 'whatwg-fetch'
 
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import MetaTags from 'react-meta-tags'
 
 //Loadingコンポーネント
 import Loading from './loading'
+//404コンポーネント
+import NotFound from './404'
 
-const rest_url = "http://codecodeweb.d/wp-json/wp/v2/posts/"
+const rest_url = "https://codecodeweb.com/wp-json/wp/v2/posts/"
 
 //メインコンポーネント
 class Single extends Component {
@@ -17,7 +20,8 @@ class Single extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            postData: []
+            postData: [],
+            isError: 0
         }
     }
 
@@ -25,7 +29,16 @@ class Single extends Component {
         this.setState({ isLoading: true })
         
         fetch(rest_url + this.props.match.params.id + "?_embed")
-        .then((response) => response.json())
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            }else{
+                this.setState({
+                    isError: response.status,
+                    isLoading: false
+                })
+            }
+        })
         .then((responseData) => {
             this.setState({
                 postData: [responseData],
@@ -39,11 +52,18 @@ class Single extends Component {
             return <Loading />
         }
         
+        if(this.state.isError != 0) {
+            return <NotFound />
+        }
+        
         return(
             <article>
                 {this.state.postData.map(item =>{
                     return (
                         <div key={item.id} className="single">
+                            <MetaTags>
+                                <title>{item.title.rendered} | CodeCode</title>
+                            </MetaTags>
                             <h2>{item.title.rendered}</h2>
                             <div className="meta">
                                 <ul className="categories">
